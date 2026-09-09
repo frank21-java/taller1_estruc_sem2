@@ -1,5 +1,5 @@
 #include "paciente.h"
-
+#include "Node.h"
 #include <iostream>
 #include <limits>
 #include <fstream>
@@ -8,14 +8,46 @@
 #include<sstream>
 #include<algorithm>
 using namespace std;
+
+
 void menu();
+void mostrarEsp();
+
 void txt();
 void atencion();
 
+Node* headEspera = nullptr;
+Node* headHistorial = nullptr;
+Node* Urgencias = nullptr;
+Node* Medicina_General = nullptr;
+Node* Cardiologia = nullptr;
+Node* Neurologia = nullptr;
+Node* Traumatologia = nullptr;
+Node* Cirugia = nullptr;
+Node* Pediatria = nullptr;
+Node* Hospitalizacion = nullptr;
 
-int main()
-{
+void agregar(Node*& head, Node* nuevo){
+    if(nuevo == nullptr) return;
+    if(head == nullptr){
+        head = nuevo;
+        nuevo->next = nullptr;
+        nuevo->prev = nullptr;
+        return;
+    }
+    Node* temp = head;
+    while (temp->next != nullptr){
+        temp = temp->next;
+    }
+    temp->next =nuevo;
+    nuevo->prev = temp;
+    nuevo->next = nullptr;
+}
+
+
+int main(){
     txt();
+    
     int opcion;
     do
     {
@@ -30,12 +62,14 @@ int main()
             break;
         case 3: 
             break;
-        case 4: cout << "¡Hasta pronto!" << endl; break; 
+        case 4: cout << "Hasta luego :D." << endl; break; 
         default: cout << "Opción inválida" << endl;
         }
     } while (opcion != 4);
     return 0;
 }
+
+
 void menu(){
     system("cls");
     cout << "=== HOSPITAL MARMAJA ==="<< endl;
@@ -46,6 +80,23 @@ void menu(){
     cout << ""<< endl;
     cout << "Seleccionar opción: ";
 }
+
+void mostrarEsp(Node* head){
+    if(head == nullptr){
+        cout << "No hay Pacientes"<< endl;
+        return;
+    }
+    Node* temp = head;
+    int cont = 1;
+    while(temp != nullptr){
+        cout<<cont++<<". "
+            << temp->p.getId()<<" - "
+            << temp->p.getNombre()<<endl;
+        temp = temp->next;
+    }
+}
+
+
 
 void txt(){
     ifstream archivo("ejemplo.txt");
@@ -63,16 +114,21 @@ void txt(){
         getline(ss,edades,';');
         getline(ss,servicio,';');
         edad = stoi(edades);
-        paciente pacientes(string id, string nombre,int edad,string servicio); 
-
+        Node* nuevo = new Node(id, nombre,edad,servicio); 
+        agregar(headEspera, nuevo);
     }
     archivo.close();
 }
 
+
+
 void atencion(){
     cout<<"=== PACIENTES EN ESPERA =="<< endl;
-    
-    
+    do{
+        mostrarEsp(headEspera);
+        int opcionEs;
+        cin>> opcionEs;
+    }
 }
 
 

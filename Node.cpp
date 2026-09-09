@@ -1,9 +1,7 @@
 #include "Node.h"
-Node::Node(string id, string nombre, int edad, string servicio){
-    next = nullptr;
-    this->id = id;
-    this->nombre = nombre;
-    this->edad = edad;
-    this->servicio = servicio;
-    prev=nullptr;
+Node::Node(string id, string nombre, int edad, string servicio)
+    : p(id, nombre, edad, servicio), 
+        next(nullptr),
+        prev(nullptr) {
+    
 }

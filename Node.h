@@ -1,13 +1,16 @@
 #pragma once
 #include <string>
+#include "paciente.h"
+
 using namespace std;
-struct Node{
-    next = nullptr;
+
+struct Node {
+    paciente p;
+    Node* next;
+    Node* prev;
     string id;
     string nombre;
     int edad;
     string servicio;
-    prev=nullptr;
     Node(string id, string nombre, int edad, string servicio);
-    Node* prev;
 };
