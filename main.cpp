@@ -4,12 +4,13 @@
 #include <limits>
 #include <fstream>
 #include <string>
-#include<map>
-#include<sstream>
-#include<algorithm>
+#include <sstream>
+#include <algorithm>
+#include <cctype>
 using namespace std;
 
 //principal
+void liberarLista(Node*& head);
 void menu();
 void txt();
 //primerpunto
@@ -25,7 +26,7 @@ int contarNodo(Node* head);
 //parte3
 void Historial();
 
-
+void pushHistorial(Node*& head, Node* nuevo);
 
 Node* headEspera = nullptr;
 
@@ -42,22 +43,29 @@ Node* headHistorial = nullptr;
 
 void agregar(Node*& head, Node* nuevo){
     if(nuevo == nullptr) return;
+    nuevo->next = nullptr;
+    nuevo->prev = nullptr;
+
     if(head == nullptr){
         head = nuevo;
-        nuevo->next = nullptr;
-        nuevo->prev = nullptr;
         return;
     }
     Node* temp = head;
-    while (temp->next != nullptr){
-        temp = temp->next;
-    }
-    temp->next =nuevo;
+    while(temp->next != nullptr) temp = temp->next;
+    temp->next = nuevo;
     nuevo->prev = temp;
-    nuevo->next = nullptr;
 }
 
 //principal
+void liberarLista(Node*& head){
+    while(head != nullptr){
+        Node* temp = head;
+        head = head->next;
+        delete temp;
+    }
+    head = nullptr;
+}
+
 int main(){
     txt();
     int opcion;
@@ -80,6 +88,16 @@ int main(){
         default: cout << "Opcion invalida" << endl;
         }
     } while (opcion != 4);
+    liberarLista(headEspera);
+    liberarLista(Urgencias);
+    liberarLista(Medicina_General);
+    liberarLista(Cardiologia);
+    liberarLista(Neurologia);
+    liberarLista(Traumatologia);
+    liberarLista(Cirugia);
+    liberarLista(Pediatria);
+    liberarLista(Hospitalizacion);
+    liberarLista(headHistorial);
     return 0;
 }
 void txt(){
@@ -123,6 +141,13 @@ Node* eliminarPrimero(Node*& head){
     temp->next = nullptr;
     temp->prev = nullptr;
     return temp;
+}
+void pushHistorial(Node*& head, Node* nuevo){
+    if(nuevo == nullptr) return;
+    nuevo->prev = nullptr;
+    nuevo->next = head;
+    if(head != nullptr) head->prev = nuevo;
+    head = nuevo;
 }
 
 void mostrarEsp(Node* head){
@@ -169,12 +194,7 @@ void atencion(){
     cout << "Indique la cantidad de pacientes a atender: ";
     cin>> opcionEs;
     cout<<""<<endl;
-    int total = 0;
-    Node* temp = headEspera;
-    while(temp != nullptr){
-        total++;
-        temp = temp->next;
-    }
+    int total = contarNodo(headEspera);
     if(opcionEs <=0 || opcionEs > total){
         cout<< "Cantidad invalida"<<endl;
         system("pause");
@@ -223,7 +243,7 @@ void mostrarDepa(Node* head){
     system("cls");
     Node* temp = head;
     cout<<"=== ESTADO "<<temp->p.getServicio()<<" ==="<<endl;
-    cout<<"Pacientes en el departamento de cardiologia: "<<contarNodo(temp)<<endl;
+    cout<<"Pacientes en el departamento de "<<temp->p.getServicio()<<": "<<contarNodo(temp)<<endl;
     while(temp != nullptr){
         cout<<temp->p.getNombre()<<" ("<<temp->p.getEdad()<<")"<<endl;
         temp = temp->next;
