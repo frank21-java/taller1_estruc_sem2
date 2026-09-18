@@ -17,10 +17,14 @@ void atencion();
 void mostrarEsp(Node* head);
 void asiganarDepa(Node* nuevo);
 Node* eliminarPrimero(Node*& head);
+//segundopunto
+void menu2();
+void verDepartamento();
+
+
 
 
 Node* headEspera = nullptr;
-Node* headHistorial = nullptr;
 Node* Urgencias = nullptr;
 Node* Medicina_General = nullptr;
 Node* Cardiologia = nullptr;
@@ -29,6 +33,8 @@ Node* Traumatologia = nullptr;
 Node* Cirugia = nullptr;
 Node* Pediatria = nullptr;
 Node* Hospitalizacion = nullptr;
+
+Node* headHistorial = nullptr;
 
 void agregar(Node*& head, Node* nuevo){
     if(nuevo == nullptr) return;
@@ -62,8 +68,9 @@ int main(){
             atencion();
             break;
         case 2:
+            verDepartamento();
             break;
-        case 3: 
+        case 3:
             break;
         case 4: cout << "Hasta luego :D." << endl; break; 
         default: cout << "Opción inválida" << endl;
@@ -102,7 +109,6 @@ void menu(){
     cout << ""<< endl;
     cout << "Seleccionar opción: ";
 }
-
 
 //primer punto
 Node* eliminarPrimero(Node*& head){
@@ -149,9 +155,9 @@ void atencion(){
     cout<<"=== PACIENTES EN ESPERA =="<< endl;
     mostrarEsp(headEspera);
     int opcionEs;
-    cout << "Indique la cantidad de pacientes a atender: "<<endl;
+    cout << "Indique la cantidad de pacientes a atender: ";
     cin>> opcionEs;
-    
+    cout<<""<<endl;
     int total = 0;
     Node* temp = headEspera;
     while(temp != nullptr){
@@ -177,8 +183,69 @@ void atencion(){
         cout << ""<<endl;
         cout << "Paciente enviado a "<<atendido->p.getServicio()<<endl;
     }
-    system("stop");
+    cout<<""<<endl;
+    string hola;
+    cout << "Presione alguna tecla para continuar "<<endl;
+    cin>>hola;
 }
+
+//punto 2
+
+void menu2(){
+    system("clear");
+    cout << "=== DEPARTAMENTOS/SERVICIOS ==="<< endl;
+    cout << "1. Urgencias"<< endl;
+    cout << "2. Medicina General"<< endl;
+    cout << "3. Cardiología"<< endl;
+    cout << "4. Neurología"<< endl;
+    cout << "5. Traumatología"<< endl;
+    cout << "6. Cirugía"<< endl;
+    cout << "7. Pediatría"<< endl;
+    cout << "8. Hospitalización"<< endl;
+    cout << ""<< endl;
+    cout << "Seleccionar opción: ";
+}
+
+void mostrarDepa(Node* head){
+    if(head == nullptr){
+        return;
+    }
+    Node* temp = head;
+    while(temp != nullptr){
+        cout<<temp->p.getNombre()<<" ("<<temp->p.getEdad()<<")"<<endl;
+        temp = temp->next;
+    }
+}
+
+void verDepartamento(){
+    menu2();
+    int opcion;
+    cout<< "Seleccionar opción: ";
+    cin>>opcion;
+    cout<<""<<endl;
+    if(opcion == 1){ mostrarDepa(Urgencias);}
+    else if(opcion == 2){ mostrarDepa(Medicina_General);}
+    else if(opcion == 3){ mostrarDepa(Cardiologia);}
+    else if(opcion == 4){ mostrarDepa(Neurologia);}
+    else if(opcion == 5){ mostrarDepa(Traumatologia);}
+    else if(opcion == 6){ mostrarDepa(Cirugia);}
+    else if(opcion == 7){ mostrarDepa(Pediatria);}
+    else if(opcion == 8){ mostrarDepa(Hospitalizacion);}
+    else{
+        cout<<"Opcion invalida"<<endl;
+    }
+    cout<<""<<endl;
+    string hola;
+    cout << "Presione alguna tecla para continuar "<<endl;
+    cin>>hola;
+}
+
+
+
+
+
+//punto 3
+
 
 
 
