@@ -11,8 +11,10 @@ using namespace std;
 
 //principal
 void liberarLista(Node*& head);
+bool servicioValido(const string& s);
 void menu();
 void txt();
+Node* existe(Node* head, const string& id);
 //primerpunto
 void atencion();
 void mostrarEsp(Node* head);
@@ -56,6 +58,22 @@ void agregar(Node*& head, Node* nuevo){
     nuevo->prev = temp;
 }
 
+bool servicioValido(const string& s){
+    return s == "Urgencias"        || s == "Medicina General" ||
+           s == "Cardiologia"      || s == "Neurologia"       ||
+           s == "Traumatologia"    || s == "Cirugia"          ||
+           s == "Pediatria"        || s == "Hospitalizacion";
+}
+
+Node* existe(Node* head, const string& id){
+    Node* temp = head;
+    while (temp != nullptr)
+    {
+        if(temp->p.getId() == id) {return temp;}
+        temp = temp->next;
+    }
+    return nullptr;
+}
 //principal
 void liberarLista(Node*& head){
     while(head != nullptr){
@@ -111,11 +129,22 @@ void txt(){
         stringstream ss(linea);
         string id,nombre,edades,servicio;
         int edad;
-        getline(ss, id, ';');
-        getline(ss,nombre,';');
-        getline(ss,edades,';');
-        getline(ss,servicio,';');
-        edad = stoi(edades);
+        if(!getline(ss, id, ';')||
+        !getline(ss,nombre,';')||
+        !getline(ss,edades,';')||
+        !getline(ss,servicio,';')){continue;}
+        if(id.empty() || nombre.empty() || edades.empty() || servicio.empty()){continue;}
+        try{
+            edad = stoi(edades);
+        } catch(const std::invalid_argument&){
+            continue;
+        }
+        if(existe(headEspera,id) != nullptr){
+            continue;
+        }
+        if(!servicioValido(servicio)){
+            continue;
+        }
         Node* nuevo = new Node(id, nombre,edad,servicio); 
         agregar(headEspera, nuevo);
     }
@@ -142,6 +171,7 @@ Node* eliminarPrimero(Node*& head){
     temp->prev = nullptr;
     return temp;
 }
+
 void pushHistorial(Node*& head, Node* nuevo){
     if(nuevo == nullptr) return;
     nuevo->prev = nullptr;
@@ -178,7 +208,6 @@ void asiganarDepa(Node* nuevo){
     else if(serv == "Cirugia"){ agregar(Cirugia,nuevo);}
     else if(serv == "Pediatria"){ agregar(Pediatria,nuevo);}
     else if(serv == "Hospitalizacion"){ agregar(Hospitalizacion,nuevo);}
-    else { cout << "Servicio desconocido: " << serv << endl; }
 }
 
 void atencion(){
@@ -207,7 +236,7 @@ void atencion(){
         if(atendido == nullptr){ break;}
         asiganarDepa(atendido);
         Node* copiahistorial = new Node(atendido->p.getId(),atendido->p.getNombre(),atendido->p.getEdad(),atendido->p.getServicio());
-        agregar(headHistorial, copiahistorial);
+        pushHistorial(headHistorial, copiahistorial);
         cout << "ID: "<<atendido->p.getId()<<endl;
         cout << "Nombre: "<<atendido->p.getNombre()<<endl;
         cout << "Edad: "<<atendido->p.getEdad()<<endl;
@@ -248,7 +277,6 @@ void mostrarDepa(Node* head){
         cout<<temp->p.getNombre()<<" ("<<temp->p.getEdad()<<")"<<endl;
         temp = temp->next;
     }
-    cout<<""<<endl;
 }
 
 int contarNodo(Node* head){
@@ -278,6 +306,7 @@ void verDepartamento(){
     else{
         cout<<"Opcion invalida"<<endl;
     }
+    cout<<""<<endl;
     system("pause");
 }
 
