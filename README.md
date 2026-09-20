@@ -5,9 +5,12 @@
 
 | Nombre | RUT | Usuario GitHub | Carrera |
 |--------|-----|----------------|---------|
-| [Nombre 1] | [12.345.678-9] | [@usuario1](https://github.com/usuario1) | [Ing. Civil en Informática] |
-| [Nombre 2] | [12.345.678-9] | [@usuario2](https://github.com/usuario2) | [Ing. Civil en Informática] |
-
+| [Francisco Castillo] | [21.717.293-9] | [@frank21-java) | [Ing. en Tecnologías de Información] |
 ## Compilación
 
-Linux / macOS:
+Windows:
+Abre CMD, navega a la carpeta del proyecto:
+ejemplo: cd C:\ruta\a\tu\proyecto
+Y compila usando el siguente comando:
+g++ -std=c++17 main.cpp Node.cpp paciente.cpp -o hospital.exe
+
