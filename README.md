@@ -1,4 +1,3 @@
-# taller1_estruc_sem2
 # Hospital Marmaja
 
 ## Integrantes
@@ -7,6 +6,8 @@
 |--------|-----|----------------|---------|
 | [Francisco Castillo] | [21.717.293-9] | [@frank21-java) | [Ing. en Tecnologías de Información] |
 ## Compilación
+## Árbol de Decisión Implementado
+
 
 Windows:
 Abre CMD, navega a la carpeta del proyecto:
