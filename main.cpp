@@ -179,49 +179,42 @@ void insertarEnAVL(const paciente& p, const string& serv) {
     else if (serv == "Pediatria") PediatriaAVL.insertar(p);
     else if (serv == "Hospitalizacion") HospitalizacionAVL.insertar(p);
 }
-string  criterio(paciente p){
+string determinarServicio(paciente p) {
     cout << "Ruta: ";
+    if (p.getTemperatura() >= 39.5 || p.getPresionArterial() >= 160 || p.getDolor() >= 9) {
+        cout << "Signos vitales criticos (Temp >= 39.5 o Presion >= 160 o Dolor >= 9)" << endl;
+        return "Urgencias";
+    }
+    cout << "Signos vitales estables -> ";
+    if (p.getTipoDolor() == "pecho") {
+        cout << "Dolor en el pecho" << endl;
+        return "Cardiologia";
+    }
+    if (p.getSintomasNeurologicos() == 1) {
+        cout << "Sintomas neurologicos == 1" << endl;
+        return "Neurologia";
+    }
+    cout << "Sin sintomas neurologicos -> ";
+    if (p.getTrauma() == 1) {
+        cout << "Trauma == 1 -> ";
+        if (p.getRequiereCirugia() == 1) {
+            cout << "Requiere cirugia" << endl;
+            return "Cirugia";
+        }
+        cout << "No requiere cirugia" << endl;
+        return "Traumatologia";
+    }
+    cout << "Sin trauma -> ";
     if (p.getEdad() < 14) {
         cout << "Edad < 14" << endl;
         return "Pediatria";
     }
     cout << "Edad >= 14 -> ";
-
-    if (p.getTrauma() == 1) {
-        cout << "Trauma == 1 -> ";
-        if (p.getRequiereCirugia() == 1) {
-            cout << "RequiereCirugia == 1" << endl;
-            return "Cirugia";
-        }
-        cout << "RequiereCirugia == 0" << endl;
-        return "Traumatologia";
-    }
-    cout << "Trauma == 0 -> " << endl << "\t";
-
-    if (p.getSintomasNeurologicos() == 1) {
-        cout << "SintomasNeurologicos == 1" << endl;
-        return "Neurologia";
-    }
-    cout << "SintomasNeurologicos == 0 -> ";
-
-    if (p.getTipoDolor() == "pecho") {
-        cout << "TipoDolor == pecho" << endl;
-        return "Cardiologia";
-    }
-    cout << "TipoDolor != pecho -> " << endl << "\t";
-
-    if (p.getTemperatura() >= 38.5 || p.getDolor() >= 8) {
-        cout << "Temperatura >= 38.5 o Dolor >= 8" << endl;
-        return "Urgencias";
-    }
-    cout << "Temperatura < 38.5 y Dolor < 8 -> ";
-
-    if (p.getDiasHospitalizacion() >= 2) {
-        cout << "DiasHospitalizacion >= 2" << endl;
+    if (p.getDiasHospitalizacion() >= 3) {
+        cout << "Dias hospitalizacion >= 3" << endl;
         return "Hospitalizacion";
     }
-    cout << "DiasHospitalizacion < 2" << endl;
-
+    cout << "Dias hospitalizacion < 3" << endl;
     return "Medicina General";
 }
 void atencion(){
